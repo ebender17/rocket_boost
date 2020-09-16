@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 154023063804678575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.37, z: 0}
-  m_LocalScale: {x: 1, y: 0.7143354, z: 1}
+  m_LocalScale: {x: 1, y: 1.0472157, z: 1}
   m_Children: []
   m_Father: {fileID: 7902942181920390981}
   m_RootOrder: 3
@@ -259,8 +259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8490adcbb998fe4691e14cedcb1a737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rcsThrust: 50
-  mainThrust: 1
+  rcsThrust: 300
+  mainThrust: 500
   levelLoadDelay: 2
   mainEngine: {fileID: 8300000, guid: 1ddb688c4503e4940ad40d75a2dd39a1, type: 3}
   playerDead: {fileID: 8300000, guid: 07bee13a9dae9fa448d522f384b94370, type: 3}

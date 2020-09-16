@@ -104,7 +104,7 @@ public class Rocket : MonoBehaviour
 
     private void ApplyThrust()
     {
-        rigidBody.AddRelativeForce(Vector3.up * mainThrust); //When multiplying by Time.deltaTime messes thrust up 
+        rigidBody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime); //Multiple by Time.deltaTime to make frame independent
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(mainEngine);
