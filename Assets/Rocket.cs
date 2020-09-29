@@ -19,8 +19,7 @@ public class Rocket : MonoBehaviour
     Rigidbody rigidBody;
     AudioSource audioSource;
 
-    enum State { Alive, Dying, Transcending };
-    State state = State.Alive;
+    bool isTransitioning = false; 
 
     [SerializeField] bool collisionsDisabled = true; 
 
@@ -35,7 +34,7 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (state == State.Alive)
+        if (!isTransitioning)
         {
 
             RespondToThrustInput();
@@ -64,7 +63,7 @@ public class Rocket : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (state != State.Alive || collisionsDisabled) { return; } //ignore collisions when dead
+        if (isTransitioning || collisionsDisabled) { return; } //ignore collisions when dead
 
         switch (collision.gameObject.tag)
         {
@@ -83,7 +82,7 @@ public class Rocket : MonoBehaviour
 
     private void StartSuccessSequence()
     {
-        state = State.Transcending;
+        isTransitioning = true;
         audioSource.Stop(); //stopping current sound 
         audioSource.PlayOneShot(levelLoad);
         successParticles.Play(); 
@@ -92,7 +91,7 @@ public class Rocket : MonoBehaviour
 
     private void StartDeathSequence()
     {
-        state = State.Dying;
+        isTransitioning = true; 
         audioSource.Stop();
         audioSource.PlayOneShot(playerDead);
         deathParticles.Play();
@@ -122,10 +121,15 @@ public class Rocket : MonoBehaviour
         }
         else
         {
-            audioSource.Stop();
-            mainEngineParticles.Stop();
+            StopApplyingThrust();
         }
 
+    }
+
+    private void StopApplyingThrust()
+    {
+        audioSource.Stop();
+        mainEngineParticles.Stop();
     }
 
     private void ApplyThrust()
@@ -140,7 +144,8 @@ public class Rocket : MonoBehaviour
 
     private void RespondToRotateInput()
     {
-        rigidBody.freezeRotation = true; //take manual control of rotation 
+        rigidBody.angularVelocity = Vector3.zero; // remove rotation due to physics
+        
         float rotationThisFrame = rcsThrust * Time.deltaTime; 
 
         if (Input.GetKey(KeyCode.A))
@@ -152,7 +157,7 @@ public class Rocket : MonoBehaviour
             transform.Rotate(-Vector3.forward * rotationThisFrame);
         }
 
-        rigidBody.freezeRotation = false; //resume physics control of rotation
+        
     }
 
 }
